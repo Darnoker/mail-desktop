@@ -26,6 +26,7 @@ class Ui_loginWindow(object):
         self.emailAdressField.setObjectName("emailAdressField")
         self.passwordField = QtWidgets.QLineEdit(loginWindow)
         self.passwordField.setGeometry(QtCore.QRect(90, 80, 161, 31))
+        self.passwordField.setEchoMode(QtWidgets.QLineEdit.Password)
         self.passwordField.setObjectName("passwordField")
         self.loginButton = QtWidgets.QPushButton(loginWindow)
         self.loginButton.setGeometry(QtCore.QRect(170, 130, 91, 31))
