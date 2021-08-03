@@ -11,12 +11,15 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-def loginButtonAction():
-    from view.viewHandler import ViewHandler
-    viewHandler = ViewHandler()
-    viewHandler.showMainWindow()
 
 class Ui_loginWindow(object):
+    def __init__(self, viewHandler):
+        self.viewHandler = viewHandler
+
+    def loginButtonAction(self):
+        self.viewHandler.showMainWindow()
+        self.viewHandler.closeLoginWindow()
+
     def setupUi(self, loginWindow):
         loginWindow.setObjectName("loginWindow")
         loginWindow.resize(409, 254)
@@ -37,8 +40,7 @@ class Ui_loginWindow(object):
         self.loginButton.setGeometry(QtCore.QRect(170, 130, 91, 31))
         self.loginButton.setObjectName("loginButton")
         self.retranslateUi(loginWindow)
-        self.loginButton.clicked['bool'].connect(lambda: loginButtonAction())
-
+        self.loginButton.clicked['bool'].connect(lambda: self.loginButtonAction())
 
 
     def retranslateUi(self, loginWindow):
