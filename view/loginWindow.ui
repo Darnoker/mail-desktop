@@ -77,5 +77,22 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>loginButton</sender>
+   <signal>clicked()</signal>
+   <receiver>loginWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>215</x>
+     <y>145</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>204</x>
+     <y>126</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

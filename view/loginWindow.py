@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\loginWindow.ui'
+# Form implementation generated from reading ui file 'loginWindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -10,6 +10,11 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
+def loginButtonAction():
+    from view.viewHandler import ViewHandler
+    viewHandler = ViewHandler()
+    viewHandler.showMainWindow()
 
 class Ui_loginWindow(object):
     def setupUi(self, loginWindow):
@@ -31,9 +36,10 @@ class Ui_loginWindow(object):
         self.loginButton = QtWidgets.QPushButton(loginWindow)
         self.loginButton.setGeometry(QtCore.QRect(170, 130, 91, 31))
         self.loginButton.setObjectName("loginButton")
-
         self.retranslateUi(loginWindow)
-        QtCore.QMetaObject.connectSlotsByName(loginWindow)
+        self.loginButton.clicked['bool'].connect(lambda: loginButtonAction())
+
+
 
     def retranslateUi(self, loginWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -45,6 +51,7 @@ class Ui_loginWindow(object):
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     loginWindow = QtWidgets.QDialog()
     ui = Ui_loginWindow()
