@@ -1,7 +1,9 @@
-from view.mainWindow import Ui_MainWindow
-from view.loginWindow import Ui_loginWindow
+from view.windows.MainWindow import Ui_MainWindow
+from view.windows.LoginWindow import Ui_loginWindow
 from PyQt5 import QtWidgets
 
+# ViewHandler is a class, that performs view-related actions, for example: showing login window
+# and closing it.
 
 class ViewHandler:
     def __init__(self):
