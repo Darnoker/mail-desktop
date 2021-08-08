@@ -12,10 +12,10 @@ class LoginWindowController:
         if self.checkFields():
             self.emailAccount = EmailAccount(self.loginWindow.emailAdressField.text(),
                                              self.loginWindow.passwordField.text())
-            
+
             self.loginService = LoginService(self.emailAccount, self.loginWindow)
 
-            if self.loginService.login_() and self.checkFields():
+            if self.loginService.login_():
                 self.loginWindow.viewHandler.showMainWindow()
                 self.loginWindow.viewHandler.closeLoginWindow()
 
@@ -23,9 +23,9 @@ class LoginWindowController:
         if not self.loginWindow.emailAdressField.text():
             self.loginWindow.errorLabel.setText("Email Address field is empty!")
             return False
-        
+
         if not self.loginWindow.passwordField.text():
             self.loginWindow.errorLabel.setText("Password field is empty!")
             return False
-        
+
         return True
