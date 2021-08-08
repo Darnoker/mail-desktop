@@ -12,7 +12,12 @@ from PyQt5 import QtCore, QtWidgets
 
 
 # Ui_MainWindow is a class, that describes main window and all logic behind it.
-class Ui_MainWindow(object):
+
+
+class MainWindowController(object):
+    def __init__(self, viewHandler):
+        self.viewHandler = viewHandler
+
     # function, that is called to set up the main window.
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
