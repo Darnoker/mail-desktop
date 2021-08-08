@@ -9,10 +9,10 @@ class LoginWindowController:
 
     def checkFields(self):
         if not self.loginWindow.emailAdressField.text():
-            print("Email Adress is empty!\n")
+            self.loginWindow.errorLabel.setText("Email Address field is empty!")
             return False
         if not self.loginWindow.passwordField.text():
-            print("Password field is empty!\n")
+            self.loginWindow.errorLabel.setText("Password field is empty!")
             return False
 
         return True

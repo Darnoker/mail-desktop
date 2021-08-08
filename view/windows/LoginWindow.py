@@ -40,6 +40,9 @@ class Ui_loginWindow(object):
         self.loginButton = QtWidgets.QPushButton(loginWindow)
         self.loginButton.setGeometry(QtCore.QRect(170, 130, 91, 31))
         self.loginButton.setObjectName("loginButton")
+        self.errorLabel = QtWidgets.QLabel(loginWindow)
+        self.errorLabel.setObjectName(u"errorLabel")
+        self.errorLabel.setGeometry(QtCore.QRect(10, 190, 261, 16))
         self.retranslateUi(loginWindow)
         self.loginButton.clicked['bool'].connect(lambda: self.loginWindowController.loginButtonAction())
 
