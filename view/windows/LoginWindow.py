@@ -12,14 +12,13 @@ from PyQt5 import QtCore, QtWidgets
 
 
 # Ui_loginWindow is a class, that describes our login window and all logic behind it.
+from controllers.LoginWindowController import LoginWindowController
+
+
 class Ui_loginWindow(object):
     def __init__(self, viewHandler):
         self.viewHandler = viewHandler
-
-# function, that is called when login button is clicked.
-    def loginButtonAction(self):
-        self.viewHandler.showMainWindow()
-        self.viewHandler.closeLoginWindow()
+        self.loginWindowController = LoginWindowController(self)
 
 # function used to set up the login window
     def setupUi(self, loginWindow):
@@ -42,7 +41,9 @@ class Ui_loginWindow(object):
         self.loginButton.setGeometry(QtCore.QRect(170, 130, 91, 31))
         self.loginButton.setObjectName("loginButton")
         self.retranslateUi(loginWindow)
-        self.loginButton.clicked['bool'].connect(lambda: self.loginButtonAction())
+        self.loginButton.clicked['bool'].connect(lambda: self.loginWindowController.loginButtonAction())
+
+
 
 # function, that is used to name labels and window title.
     def retranslateUi(self, loginWindow):
