@@ -1,10 +1,6 @@
 import sys
 
 from PyQt5 import QtWidgets
-
-from models.EmailAccount import EmailAccount
-from services.EmailService import EmailService
-from services.LoginService import LoginService
 from view.ViewHandler import ViewHandler
 
 # declare variable app.
