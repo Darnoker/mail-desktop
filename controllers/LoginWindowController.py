@@ -62,7 +62,7 @@ class LoginWindowController(BaseController):
                                         self.passwordField.text())
 
             self.loginService = LoginService(emailAccount, self)
-            self.emailService = EmailService(emailAccount)
+            self.viewHandler.emailService = EmailService(emailAccount)
 
             if self.loginService.login_():
                 self.viewHandler.showMainWindow()
