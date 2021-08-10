@@ -3,6 +3,6 @@ from abc import ABC, abstractmethod
 
 class BaseController(ABC):
     @abstractmethod
-    def __init__(self, viewHandler, emailService):
+    def __init__(self, viewHandler):
         self.viewHandler = viewHandler
-        self.emailService = emailService
+        self.emailService = None
