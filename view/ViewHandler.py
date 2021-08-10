@@ -10,10 +10,11 @@ class ViewHandler:
     def __init__(self):
         self.loginWindow = QtWidgets.QDialog()
         self.mainWindow = QtWidgets.QMainWindow()
-        self.ui_LoginWindow = LoginWindowController(self)
-        self.ui_MainWindow = MainWindowController(self)
-        self.ui_LoginWindow.setupUi(self.loginWindow)
-        self.ui_MainWindow.setupUi(self.mainWindow)
+        self.loginWindowController = LoginWindowController(self)
+        self.mainWindowController = MainWindowController(self)
+        self.loginWindowController.setupUi(self.loginWindow)
+        self.mainWindowController.setupUi(self.mainWindow)
+        self.emailService = None
 
     def showLoginWindow(self):
         self.loginWindow.show()
