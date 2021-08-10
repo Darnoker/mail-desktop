@@ -11,16 +11,16 @@
 from PyQt5 import QtCore, QtWidgets
 
 # LoginWindowController is a class, that describes our login window and all logic behind it.
+from controllers.BaseController import BaseController
 from models.EmailAccount import EmailAccount
 from services.EmailService import EmailService
 from services.LoginService import LoginService
 
 
-class LoginWindowController(object):
+class LoginWindowController(BaseController):
     def __init__(self, viewHandler):
-        self.viewHandler = viewHandler
+        super(LoginWindowController, self).__init__(viewHandler)
         self.loginService = None
-        self.emailService = None
 
     # function used to set up the login window
     def setupUi(self, loginWindow):
