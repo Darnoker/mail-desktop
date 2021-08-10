@@ -1,6 +1,7 @@
 import imaplib
 
 
+# Class, that defines an email account of user.
 class EmailAccount:
     def __init__(self, address, password):
         self.address = address
@@ -10,4 +11,3 @@ class EmailAccount:
             "outgoingHost": "smtp.gmail.com"
         }
         self.mail = imaplib.IMAP4_SSL(self.properties.get("incomingHost"))
-

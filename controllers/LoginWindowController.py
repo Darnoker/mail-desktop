@@ -56,6 +56,7 @@ class LoginWindowController(BaseController):
         self.passwordLabel.setText(_translate("loginWindow", "Password:"))
         self.loginButton.setText(_translate("loginWindow", "Login"))
 
+    # function used to manage login action
     def loginButtonAction(self):
         if self.checkFields():
             emailAccount = EmailAccount(self.emailAdressField.text(),
@@ -68,6 +69,7 @@ class LoginWindowController(BaseController):
                 self.viewHandler.showMainWindow()
                 self.viewHandler.closeLoginWindow()
 
+    # checks if fields for email address and password aren't empty.
     def checkFields(self):
         if not self.emailAdressField.text():
             self.errorLabel.setText("Email Address field is empty!")

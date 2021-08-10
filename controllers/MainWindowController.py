@@ -10,7 +10,7 @@
 
 from PyQt5 import QtCore, QtWidgets
 
-# Ui_MainWindow is a class, that describes main window and all logic behind it.
+# MainWindowController is a class, that describes main window and all logic behind it.
 from controllers.BaseController import BaseController
 
 
