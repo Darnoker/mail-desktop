@@ -67,6 +67,7 @@ class LoginWindowController(BaseController):
 
             if self.loginService.login_():
                 self.viewHandler.showMainWindow()
+                self.viewHandler.initMailTreeView()
                 self.viewHandler.closeLoginWindow()
 
     # checks if fields for email address and password aren't empty.
