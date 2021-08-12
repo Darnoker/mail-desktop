@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 import traceback
 
 
+# Class, that is used to manage login actions.
 class LoginService:
     def __init__(self, emailAccount, loginWindow):
         self.emailAccount = emailAccount

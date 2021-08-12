@@ -26,15 +26,15 @@ class LoginWindowController(BaseController):
     def setupUi(self, loginWindow):
         loginWindow.setObjectName("loginWindow")
         loginWindow.resize(409, 254)
-        self.emailAdressLabel = QtWidgets.QLabel(loginWindow)
-        self.emailAdressLabel.setGeometry(QtCore.QRect(10, 20, 47, 14))
-        self.emailAdressLabel.setObjectName("emailAdressLabel")
+        self.emailAddressLabel = QtWidgets.QLabel(loginWindow)
+        self.emailAddressLabel.setGeometry(QtCore.QRect(10, 20, 47, 14))
+        self.emailAddressLabel.setObjectName("emailAdressLabel")
         self.passwordLabel = QtWidgets.QLabel(loginWindow)
         self.passwordLabel.setGeometry(QtCore.QRect(10, 90, 51, 16))
         self.passwordLabel.setObjectName("passwordLabel")
-        self.emailAdressField = QtWidgets.QLineEdit(loginWindow)
-        self.emailAdressField.setGeometry(QtCore.QRect(90, 10, 161, 31))
-        self.emailAdressField.setObjectName("emailAdressField")
+        self.emailAddressField = QtWidgets.QLineEdit(loginWindow)
+        self.emailAddressField.setGeometry(QtCore.QRect(90, 10, 161, 31))
+        self.emailAddressField.setObjectName("emailAdressField")
         self.passwordField = QtWidgets.QLineEdit(loginWindow)
         self.passwordField.setGeometry(QtCore.QRect(90, 80, 161, 31))
         self.passwordField.setEchoMode(QtWidgets.QLineEdit.Password)
@@ -52,13 +52,14 @@ class LoginWindowController(BaseController):
     def retranslateUi(self, loginWindow):
         _translate = QtCore.QCoreApplication.translate
         loginWindow.setWindowTitle(_translate("loginWindow", "Login"))
-        self.emailAdressLabel.setText(_translate("loginWindow", "Email:"))
+        self.emailAddressLabel.setText(_translate("loginWindow", "Email:"))
         self.passwordLabel.setText(_translate("loginWindow", "Password:"))
         self.loginButton.setText(_translate("loginWindow", "Login"))
 
+    # function used to manage login action
     def loginButtonAction(self):
         if self.checkFields():
-            emailAccount = EmailAccount(self.emailAdressField.text(),
+            emailAccount = EmailAccount(self.emailAddressField.text(),
                                         self.passwordField.text())
 
             self.loginService = LoginService(emailAccount, self)
@@ -66,10 +67,12 @@ class LoginWindowController(BaseController):
 
             if self.loginService.login_():
                 self.viewHandler.showMainWindow()
+                self.viewHandler.initMailTreeView()
                 self.viewHandler.closeLoginWindow()
 
+    # checks if fields for email address and password aren't empty.
     def checkFields(self):
-        if not self.emailAdressField.text():
+        if not self.emailAddressField.text():
             self.errorLabel.setText("Email Address field is empty!")
             return False
 

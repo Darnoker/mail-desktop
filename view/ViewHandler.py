@@ -3,7 +3,7 @@ from controllers.LoginWindowController import LoginWindowController
 from PyQt5 import QtWidgets
 
 
-# ViewHandler is a class, that performs view-related actions, for example: showing login window
+# ViewHandler is a class, that performs view related actions, for example: showing login window
 # and closing it.
 
 class ViewHandler:
@@ -24,3 +24,6 @@ class ViewHandler:
 
     def closeLoginWindow(self):
         self.loginWindow.close()
+
+    def initMailTreeView(self):
+        self.mainWindowController.initTreeView()
