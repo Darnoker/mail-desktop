@@ -24,3 +24,6 @@ class ViewHandler:
 
     def closeLoginWindow(self):
         self.loginWindow.close()
+
+    def initMailTreeView(self):
+        self.mainWindowController.initTreeView()
