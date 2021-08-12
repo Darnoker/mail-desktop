@@ -1,19 +1,18 @@
 # -*- coding: utf-8 -*-
 
-import email
-
 # Class, used to manage email actions.
-from models.StandardModel import StandardModel
+
+from models.StandardItem import StandardItem
 
 
 class EmailService:
     def __init__(self, emailAccount):
         self.emailAccount = emailAccount
 
-    def getFolders(self, mailRoot):
+    def getFolders(self, mailName):
         for folders in self.emailAccount.mail.list_folders():
             split = folders[-1].split('/')
-            mailRoot.appendRow(StandardModel(split[-1]))
+            mailName.appendRow(StandardItem(split[-1]))
 
     # function that may be used in the future (?)
     # def fetchFolders(self):
