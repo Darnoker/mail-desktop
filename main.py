@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 import sys
 
 from PyQt5 import QtWidgets
+
 from view.ViewHandler import ViewHandler
 
 # declare variable app.
