@@ -20,7 +20,6 @@ from services.LoginService import LoginService
 class LoginWindowController(BaseController):
     def __init__(self, viewHandler):
         super(LoginWindowController, self).__init__(viewHandler)
-        self.loginService = None
 
     # function used to set up the login window
     def setupUi(self, loginWindow):
@@ -28,13 +27,13 @@ class LoginWindowController(BaseController):
         loginWindow.resize(409, 254)
         self.emailAddressLabel = QtWidgets.QLabel(loginWindow)
         self.emailAddressLabel.setGeometry(QtCore.QRect(10, 20, 47, 14))
-        self.emailAddressLabel.setObjectName("emailAdressLabel")
+        self.emailAddressLabel.setObjectName("emailAddressLabel")
         self.passwordLabel = QtWidgets.QLabel(loginWindow)
         self.passwordLabel.setGeometry(QtCore.QRect(10, 90, 51, 16))
         self.passwordLabel.setObjectName("passwordLabel")
         self.emailAddressField = QtWidgets.QLineEdit(loginWindow)
         self.emailAddressField.setGeometry(QtCore.QRect(90, 10, 161, 31))
-        self.emailAddressField.setObjectName("emailAdressField")
+        self.emailAddressField.setObjectName("emailAddressField")
         self.passwordField = QtWidgets.QLineEdit(loginWindow)
         self.passwordField.setGeometry(QtCore.QRect(90, 80, 161, 31))
         self.passwordField.setEchoMode(QtWidgets.QLineEdit.Password)
@@ -46,7 +45,7 @@ class LoginWindowController(BaseController):
         self.errorLabel.setObjectName(u"errorLabel")
         self.errorLabel.setGeometry(QtCore.QRect(10, 190, 261, 16))
         self.retranslateUi(loginWindow)
-        self.loginButton.clicked['bool'].connect(lambda: self.loginButtonAction())
+        self.loginButton.clicked['bool'].connect(lambda: self.createLoginThread())
 
     # function, that is used to name labels and window title.
     def retranslateUi(self, loginWindow):
@@ -56,19 +55,20 @@ class LoginWindowController(BaseController):
         self.passwordLabel.setText(_translate("loginWindow", "Password:"))
         self.loginButton.setText(_translate("loginWindow", "Login"))
 
-    # function used to manage login action
-    def loginButtonAction(self):
-        if self.checkFields():
-            emailAccount = EmailAccount(self.emailAddressField.text(),
-                                        self.passwordField.text())
+    def createLoginThread(self):
+        emailAccount = EmailAccount(self.emailAddressField.text(),
+                                    self.passwordField.text())
 
-            self.loginService = LoginService(emailAccount, self)
-            self.viewHandler.emailService = EmailService(emailAccount)
+        self.viewHandler.emailService = EmailService(emailAccount)
+        self.workerThread = LoginService(emailAccount, self, self.viewHandler)
+        self.workerThread.finished.connect(lambda: self.openMainWindow(self.workerThread.FLAG))
+        self.workerThread.start()
 
-            if self.loginService.login_():
-                self.viewHandler.showMainWindow()
-                self.viewHandler.initMailTreeView()
-                self.viewHandler.closeLoginWindow()
+    def openMainWindow(self, flag):
+        if flag:
+            self.viewHandler.initMailTreeView()
+            self.viewHandler.showMainWindow()
+            self.viewHandler.closeLoginWindow()
 
     # checks if fields for email address and password aren't empty.
     def checkFields(self):
