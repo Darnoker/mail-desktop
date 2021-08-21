@@ -97,6 +97,7 @@ class MainWindowController(BaseController):
         mailName = StandardItem(self.emailService.emailAccount.address)
         rootNode.appendRow(mailName)
         self.emailService.getFolders(mailName)
+        self.treeView.setExpanded(mailName.index(), True)
 
 
 # if __name__ == "__main__":
