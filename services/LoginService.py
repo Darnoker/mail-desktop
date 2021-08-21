@@ -4,17 +4,24 @@ import traceback
 
 
 # Class, that is used to manage login actions.
-class LoginService:
-    def __init__(self, emailAccount, loginWindow):
-        self.emailAccount = emailAccount
-        self.loginWindow = loginWindow
+from PyQt5 import QtCore
 
-    def login_(self):
+
+class LoginService(QtCore.QThread):
+    def __init__(self, emailAccount, loginWindowController, viewHandler):
+        super().__init__()
+        self.emailAccount = emailAccount
+        self.loginWindowController = loginWindowController
+        self.viewHandler = viewHandler
+        self.FLAG = False
+
+    def run(self):
         try:
             self.emailAccount.mail.login(self.emailAccount.address, self.emailAccount.password)
-            return True
+            self.FLAG = True
         except Exception as e:
             traceback.print_exc()
             print(str(e))
-            self.loginWindow.errorLabel.setText("Invalid username or password!")
-            return False
+            self.loginWindowController.errorLabel.setText("Invalid username or password!")
+            self.FLAG = False
+
