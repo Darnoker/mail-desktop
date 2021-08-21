@@ -61,6 +61,8 @@ class LoginWindowController(BaseController):
 
         self.viewHandler.emailService = EmailService(emailAccount)
         self.workerThread = LoginService(emailAccount, self, self.viewHandler)
+        self.workerThread.started.connect(lambda : self.loginButton.setEnabled(False))
+        self.workerThread.finished.connect(lambda: self.loginButton.setEnabled(True))
         self.workerThread.finished.connect(lambda: self.openMainWindow(self.workerThread.FLAG))
         self.workerThread.start()
 
