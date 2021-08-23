@@ -56,15 +56,16 @@ class LoginWindowController(BaseController):
         self.loginButton.setText(_translate("loginWindow", "Login"))
 
     def createLoginThread(self):
-        emailAccount = EmailAccount(self.emailAddressField.text(),
-                                    self.passwordField.text())
+        if self.checkFields():
+            emailAccount = EmailAccount(self.emailAddressField.text(),
+                                        self.passwordField.text())
 
-        self.viewHandler.emailService = EmailService(emailAccount)
-        self.workerThread = LoginService(emailAccount, self, self.viewHandler)
-        self.workerThread.started.connect(lambda : self.loginButton.setEnabled(False))
-        self.workerThread.finished.connect(lambda: self.loginButton.setEnabled(True))
-        self.workerThread.finished.connect(lambda: self.openMainWindow(self.workerThread.FLAG))
-        self.workerThread.start()
+            self.viewHandler.emailService = EmailService(emailAccount)
+            self.workerThread = LoginService(emailAccount, self, self.viewHandler)
+            self.workerThread.started.connect(lambda : self.loginButton.setEnabled(False))
+            self.workerThread.finished.connect(lambda: self.loginButton.setEnabled(True))
+            self.workerThread.finished.connect(lambda: self.openMainWindow(self.workerThread.FLAG))
+            self.workerThread.start()
 
     def openMainWindow(self, flag):
         if flag:
