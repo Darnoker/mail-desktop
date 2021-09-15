@@ -5,21 +5,23 @@ from PyQt5 import QtWidgets
 
 # ViewHandler is a class, that performs view related actions, for example: showing login window
 # and closing it.
+from services.EmailManager import EmailManager
+
 
 class ViewHandler:
     def __init__(self):
-        self.loginWindow = QtWidgets.QDialog()
-        self.mainWindow = QtWidgets.QMainWindow()
-        self.loginWindowController = LoginWindowController(self)
-        self.mainWindowController = MainWindowController(self)
-        self.loginWindowController.setupUi(self.loginWindow)
-        self.mainWindowController.setupUi(self.mainWindow)
-        self.emailService = None
+        self.emailManager = EmailManager(self)
 
     def showLoginWindow(self):
+        self.loginWindow = QtWidgets.QDialog()
+        self.loginWindowController = LoginWindowController(self, self.emailManager)
+        self.loginWindowController.setupUi(self.loginWindow)
         self.loginWindow.show()
 
     def showMainWindow(self):
+        self.mainWindow = QtWidgets.QMainWindow()
+        self.mainWindowController = MainWindowController(self, self.emailManager)
+        self.mainWindowController.setupUi(self.mainWindow)
         self.mainWindow.show()
 
     def closeLoginWindow(self):
