@@ -11,17 +11,14 @@ def decode(header):
         return header
 
 class FetchHeadersService(QThread):
-    def __init__(self, folder):
+    def __init__(self, emailAccount, folder, emailManager):
         super().__init__()
-        self.folder = folder
-        self.emailAccount = None
-
-    def setAccount(self, emailAccount):
         self.emailAccount = emailAccount
+        self.folder = folder
+        self.emailManager = emailManager
 
-
-    def run(self, folder):
-        self.emailAccount.mail.select_folder(folder, readonly=True)
+    def run(self):
+        self.emailAccount.mail.select_folder(self.emailManager.folderDict[self.folder], readonly=True)
         messages = self.emailAccount.mail.search('ALL')
         for uid, message_data in self.emailAccount.mail.fetch(messages, ['ENVELOPE']).items():
             envelope = message_data[b'ENVELOPE']
@@ -38,10 +35,13 @@ class FetchHeadersService(QThread):
                 host = host.decode('utf-8')
                 # getting email string
                 email_ = mailbox + "@" + host
+                print("From: ", sender_, email_, " SUBJECT: ", subject_ )
+
             else:
                 # replacing sender and mailbox
                 sender_ = mailbox[3:-3]
                 mailbox = sender_[1:-1].replace('@', ' by ').replace('=', '@')
+                print("From: ", sender_, mailbox, " SUBJECT: ", subject_ )
 
 
 

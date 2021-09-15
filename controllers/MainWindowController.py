@@ -106,28 +106,19 @@ class MainWindowController(BaseController):
         for i in range(self.emailManager.treeItem.rowCount()):
             self.treeView.setExpanded(self.emailManager.treeItem.child(i, 0).index(), True)
 
-    def smth(self):
+    def gehHeaders(self):
         try:
             index = self.treeView.selectedIndexes()[0]
-            crawler = index.model().itemData(index)
-            folderName = crawler.get(0)
-            print(folderName)
+            index_ = index
+            parent = "None"
+            while index_.parent().data() is not None:
+                parent = index_.parent().data()
+                index_ = index_.parent()
+            folderName = index.data()
+            emailAccount = self.emailManager.accountDict[parent]
+            self.emailManager.getEmailHeaders(emailAccount, folderName)
         except Exception as e:
             print(str(e))
-
-
-
-    def dupa(self):
-        try:
-            index = self.treeView.selectedIndexes()[0]
-            crawler = index.model().itemData(index)
-            folderName = crawler.get(0)
-            self.emailService.showMessages(self.emailService.folderDict[folderName])
-        except Exception as e:
-            print(str(e))
-
-    def showEmailHeaders(self):
-        pass
 
 
 # if __name__ == "__main__":
