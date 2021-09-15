@@ -9,6 +9,8 @@
 
 
 from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5.QtWidgets import QAbstractItemView
+
 from models.StandardItem import StandardItem
 
 # MainWindowController is a class, that describes main window and all logic behind it.
@@ -18,8 +20,8 @@ from controllers.BaseController import BaseController
 
 
 class MainWindowController(BaseController):
-    def __init__(self, viewHandler):
-        super(MainWindowController, self).__init__(viewHandler)
+    def __init__(self, viewHandler, emailManager):
+        super(MainWindowController, self).__init__(viewHandler, emailManager)
 
     # function, that is called to set up the main window.
     def setupUi(self, MainWindow):
@@ -34,7 +36,9 @@ class MainWindowController(BaseController):
         self.tableWidget.setGeometry(QtCore.QRect(210, 0, 631, 221))
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(5)
-        self.tableWidget.setRowCount(0)
+        self.tableWidget.setRowCount(2)
+        self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.tableWidget.verticalHeader().setVisible(False)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
@@ -65,6 +69,13 @@ class MainWindowController(BaseController):
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
+        self.treeView.setIndentation(12)
+        self.treeView.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.treeView.pressed.connect(lambda: self.smth())
+
+        # self.treeView.pressed.connect(lambda: self.dupa())
+        # gowno = QtWidgets.QTableWidgetItem("gowno")
+        # self.tableWidget.setItem(0, 0, gowno)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -88,16 +99,35 @@ class MainWindowController(BaseController):
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))
 
     def initTreeView(self):
-        self.emailService = self.viewHandler.emailService
-        model = QtGui.QStandardItemModel()
-        self.treeView.setModel(model)
-        rootNode = model.invisibleRootItem()
-        self.treeView.setRootIndex(rootNode.index())
+        self.treeView.setModel(self.emailManager.treeModel)
+        self.treeView.setRootIndex(self.emailManager.root.index())
         self.treeView.setHeaderHidden(True)
-        mailName = StandardItem(self.emailService.emailAccount.address)
-        rootNode.appendRow(mailName)
-        self.emailService.getFolders(mailName)
-        self.treeView.setExpanded(mailName.index(), True)
+        self.treeView.setExpanded(self.emailManager.treeItem.index(), True)
+        for i in range(self.emailManager.treeItem.rowCount()):
+            self.treeView.setExpanded(self.emailManager.treeItem.child(i, 0).index(), True)
+
+    def smth(self):
+        try:
+            index = self.treeView.selectedIndexes()[0]
+            crawler = index.model().itemData(index)
+            folderName = crawler.get(0)
+            print(folderName)
+        except Exception as e:
+            print(str(e))
+
+
+
+    def dupa(self):
+        try:
+            index = self.treeView.selectedIndexes()[0]
+            crawler = index.model().itemData(index)
+            folderName = crawler.get(0)
+            self.emailService.showMessages(self.emailService.folderDict[folderName])
+        except Exception as e:
+            print(str(e))
+
+    def showEmailHeaders(self):
+        pass
 
 
 # if __name__ == "__main__":
