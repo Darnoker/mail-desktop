@@ -68,6 +68,7 @@ class LoginWindowController(BaseController):
     def emailManagerAction(self, flag, emailAccount):
         if flag:
             self.emailManager.addEmailAccount(emailAccount)
+            self.emailManager.accountDict[emailAccount.address] = emailAccount
 
     # checks if fields for email address and password aren't empty.
     def checkFields(self):
