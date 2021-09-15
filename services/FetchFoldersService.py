@@ -12,12 +12,12 @@ def isInList(list_, string):
 
 
 class FetchFoldersService(QThread):
-    def __init__(self, treeItem, emailAccount):
+    def __init__(self, treeItem, emailAccount, emailManager):
         super().__init__()
         self.foldersRoot = treeItem
         self.emailAccount = emailAccount
+        self.emailManager = emailManager
         self.foldersList = []
-        self.folderDict = {}
 
 
     def run(self):
@@ -60,10 +60,10 @@ class FetchFoldersService(QThread):
                 continue_ = isInList(list_, folder[-1])
                 if continue_:
                     split = folder[-1].split('/')
-                    self.folderDict[split[-1]] = folder[-1]
+                    self.emailManager.folderDict[split[-1]] = folder[-1]
                     continue
                 else:
-                    self.folderDict[folder[-1]] = folder[-1]
+                    self.emailManager.folderDict[folder[-1]] = folder[-1]
                     node = StandardItem(folder[-1])
                     self.foldersRoot.appendRow(node)
 
