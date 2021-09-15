@@ -9,6 +9,7 @@ from models.StandardItem import StandardItem
 from email.header import decode_header
 
 from services.FetchFoldersService import FetchFoldersService
+from services.FetchHeadersService import FetchHeadersService
 
 
 
@@ -29,6 +30,8 @@ from services.FetchFoldersService import FetchFoldersService
 class EmailManager:
     def __init__(self, viewHandler):
         self.viewHandler = viewHandler
+        self.folderDict = {}
+        self.accountDict = {}
 
     def addEmailAccount(self, emailAccount):
         self.treeModel = QtGui.QStandardItemModel()
@@ -36,16 +39,16 @@ class EmailManager:
         self.foldersList = []
         self.folderDict = {}
         self.treeItem = StandardItem(emailAccount.address)
-        print(self.treeItem.whatsThis())
         self.treeItem.setSelectable(False)
-        self.fetchFoldersService = FetchFoldersService(self.treeItem, emailAccount)
+        self.fetchFoldersService = FetchFoldersService(self.treeItem, emailAccount, self)
         self.fetchFoldersService.finished.connect(lambda: self.root.appendRow(self.treeItem))
         self.fetchFoldersService.finished.connect(lambda: self.openMainWindow())
-        self.fetchFoldersService.finished.connect(lambda: print(self.fetchFoldersService.folderDict))
         self.fetchFoldersService.start()
 
-    def getEmailHeaders(self, emailAccount):
-        pass
+    def getEmailHeaders(self, emailAccount, folderName):
+        self.fetchHeadersService = FetchHeadersService(emailAccount, folderName, self)
+        self.fetchHeadersService.started.connect(lambda: print("START"))
+        self.fetchHeadersService.start()
 
     def openMainWindow(self):
         self.viewHandler.showMainWindow()
