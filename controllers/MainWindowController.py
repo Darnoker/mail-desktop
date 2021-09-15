@@ -71,7 +71,7 @@ class MainWindowController(BaseController):
         self.menubar.addAction(self.menuHelp.menuAction())
         self.treeView.setIndentation(12)
         self.treeView.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.treeView.pressed.connect(lambda: self.smth())
+        self.treeView.pressed.connect(lambda: self.getHeaders())
 
         # self.treeView.pressed.connect(lambda: self.dupa())
         # gowno = QtWidgets.QTableWidgetItem("gowno")
@@ -106,7 +106,7 @@ class MainWindowController(BaseController):
         for i in range(self.emailManager.treeItem.rowCount()):
             self.treeView.setExpanded(self.emailManager.treeItem.child(i, 0).index(), True)
 
-    def gehHeaders(self):
+    def getHeaders(self):
         try:
             index = self.treeView.selectedIndexes()[0]
             index_ = index
