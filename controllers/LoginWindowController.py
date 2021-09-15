@@ -13,13 +13,12 @@ from PyQt5 import QtCore, QtWidgets
 # LoginWindowController is a class, that describes our login window and all logic behind it.
 from controllers.BaseController import BaseController
 from models.EmailAccount import EmailAccount
-from services.EmailService import EmailService
 from services.LoginService import LoginService
 
 
 class LoginWindowController(BaseController):
-    def __init__(self, viewHandler):
-        super(LoginWindowController, self).__init__(viewHandler)
+    def __init__(self, viewHandler, emailManager):
+        super(LoginWindowController, self).__init__(viewHandler, emailManager)
 
     # function used to set up the login window
     def setupUi(self, loginWindow):
@@ -60,18 +59,15 @@ class LoginWindowController(BaseController):
             emailAccount = EmailAccount(self.emailAddressField.text(),
                                         self.passwordField.text())
 
-            self.viewHandler.emailService = EmailService(emailAccount)
-            self.workerThread = LoginService(emailAccount, self, self.viewHandler)
-            self.workerThread.started.connect(lambda : self.loginButton.setEnabled(False))
-            self.workerThread.finished.connect(lambda: self.loginButton.setEnabled(True))
-            self.workerThread.finished.connect(lambda: self.openMainWindow(self.workerThread.FLAG))
-            self.workerThread.start()
+            self.loginService = LoginService(emailAccount, self)
+            self.loginService.started.connect(lambda: self.loginButton.setEnabled(False))
+            self.loginService.finished.connect(lambda: self.loginButton.setEnabled(True))
+            self.loginService.finished.connect(lambda: self.emailManagerAction(self.loginService.FLAG, emailAccount))
+            self.loginService.start()
 
-    def openMainWindow(self, flag):
+    def emailManagerAction(self, flag, emailAccount):
         if flag:
-            self.viewHandler.initMailTreeView()
-            self.viewHandler.showMainWindow()
-            self.viewHandler.closeLoginWindow()
+            self.emailManager.addEmailAccount(emailAccount)
 
     # checks if fields for email address and password aren't empty.
     def checkFields(self):

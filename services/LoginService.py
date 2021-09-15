@@ -8,11 +8,10 @@ from PyQt5 import QtCore
 
 
 class LoginService(QtCore.QThread):
-    def __init__(self, emailAccount, loginWindowController, viewHandler):
+    def __init__(self, emailAccount, loginWindowController):
         super().__init__()
         self.emailAccount = emailAccount
         self.loginWindowController = loginWindowController
-        self.viewHandler = viewHandler
         self.FLAG = False
 
     def run(self):
