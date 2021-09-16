@@ -10,6 +10,7 @@
 
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QAbstractItemView
+from services.FetchHeadersService import FetchHeadersService
 
 from models.StandardItem import StandardItem
 
@@ -26,16 +27,17 @@ class MainWindowController(BaseController):
     # function, that is called to set up the main window.
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(843, 617)
+        MainWindow.resize(1400, 620)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.treeView = QtWidgets.QTreeView(self.centralwidget)
         self.treeView.setObjectName(u"treeView")
-        self.treeView.setGeometry(QtCore.QRect(0, 0, 211, 571))
+        self.treeView.setGeometry(QtCore.QRect(0, 0, 210, 571))
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
-        self.tableWidget.setGeometry(QtCore.QRect(210, 0, 631, 221))
+        self.tableWidget.setGeometry(QtCore.QRect(209, 0, 1190, 221))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(5)
+        # self.tableWidget.setColumnCount(5)
+        self.tableWidget.setColumnCount(3)
         self.tableWidget.setRowCount(2)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableWidget.verticalHeader().setVisible(False)
@@ -49,8 +51,11 @@ class MainWindowController(BaseController):
         self.tableWidget.setHorizontalHeaderItem(3, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(4, item)
+        self.tableWidget.setColumnWidth(0, 200)
+        self.tableWidget.setColumnWidth(1, 350)
+        self.tableWidget.setColumnWidth(2, 640)
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
-        self.textBrowser.setGeometry(QtCore.QRect(210, 220, 631, 351))
+        self.textBrowser.setGeometry(QtCore.QRect(209, 220, 1190, 351))
         self.textBrowser.setObjectName("textBrowser")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -73,10 +78,6 @@ class MainWindowController(BaseController):
         self.treeView.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.treeView.pressed.connect(lambda: self.getHeaders())
 
-        # self.treeView.pressed.connect(lambda: self.dupa())
-        # gowno = QtWidgets.QTableWidgetItem("gowno")
-        # self.tableWidget.setItem(0, 0, gowno)
-
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -87,13 +88,9 @@ class MainWindowController(BaseController):
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Sender"))
         item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Subject"))
+        item.setText(_translate("MainWindow", "Email"))
         item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Recipent"))
-        item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Size"))
-        item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "Date"))
+        item.setText(_translate("MainWindow", "Subject"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))
@@ -116,9 +113,34 @@ class MainWindowController(BaseController):
                 index_ = index_.parent()
             folderName = index.data()
             emailAccount = self.emailManager.accountDict[parent]
-            self.emailManager.getEmailHeaders(emailAccount, folderName)
+            self.fetchHeadersService = FetchHeadersService(emailAccount, folderName, self.emailManager)
+            self.fetchHeadersService.finished.connect(lambda: self.showHeaders())
+            self.fetchHeadersService.start()
         except Exception as e:
             print(str(e))
+
+    def showHeaders(self):
+        senderList = self.fetchHeadersService.senderList
+        senderList.reverse()
+        emailList = self.fetchHeadersService.emailList
+        emailList.reverse()
+        subjectList = self.fetchHeadersService.subjectList
+        subjectList.reverse()
+        messageNumber = self.fetchHeadersService.messageNumber
+        columnCount = self.tableWidget.columnCount()
+        self.tableWidget.setRowCount(messageNumber)
+
+        for i in range(columnCount):
+            for j in range(messageNumber):
+                if i == 0:
+                    sender_ = QtWidgets.QTableWidgetItem(senderList[j])
+                    self.tableWidget.setItem(j, i, sender_)
+                if i == 1:
+                    email_ = QtWidgets.QTableWidgetItem(emailList[j])
+                    self.tableWidget.setItem(j, i, email_)
+                if i == 2:
+                    subject_ = QtWidgets.QTableWidgetItem(subjectList[j])
+                    self.tableWidget.setItem(j, i, subject_)
 
 
 # if __name__ == "__main__":
