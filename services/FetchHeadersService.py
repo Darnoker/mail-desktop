@@ -10,16 +10,26 @@ def decode(header):
     else:
         return header
 
+
 class FetchHeadersService(QThread):
     def __init__(self, emailAccount, folder, emailManager):
         super().__init__()
         self.emailAccount = emailAccount
         self.folder = folder
         self.emailManager = emailManager
+        self.senderList = []
+        self.subjectList = []
+        self.emailList = []
+
+    def addToList(self, sender_, email_, subject_):
+        self.senderList.append(sender_)
+        self.emailList.append(email_)
+        self.subjectList.append(subject_)
 
     def run(self):
         self.emailAccount.mail.select_folder(self.emailManager.folderDict[self.folder], readonly=True)
         messages = self.emailAccount.mail.search('ALL')
+        self.messageNumber = len(messages)
         for uid, message_data in self.emailAccount.mail.fetch(messages, ['ENVELOPE']).items():
             envelope = message_data[b'ENVELOPE']
             # decoding subject
@@ -35,15 +45,17 @@ class FetchHeadersService(QThread):
                 host = host.decode('utf-8')
                 # getting email string
                 email_ = mailbox + "@" + host
-                print("From: ", sender_, email_, " SUBJECT: ", subject_ )
-
+                self.addToList(sender_, email_, subject_)
             else:
-                # replacing sender and mailbox
-                sender_ = mailbox[3:-3]
-                mailbox = sender_[1:-1].replace('@', ' by ').replace('=', '@')
-                print("From: ", sender_, mailbox, " SUBJECT: ", subject_ )
-
-
-
-
-
+                # checking other variation of sender
+                if sender_[0] != '<':
+                    split_sender = sender_.split(' ')
+                    sender_ = mailbox + ' ' + split_sender[0]
+                    email_ = split_sender[1][1:-1].replace('@', ' by ').replace('=', '@')
+                    self.addToList(sender_, email_, subject_)
+                    # print("From: ", sender_, "EMAIL: ", email_, " SUBJECT: ", subject_)
+                else:
+                    email_ = sender_[1:-1].replace('@', ' by ').replace('=', '@')
+                    sender_ = mailbox[3:-3]
+                    self.addToList(sender_, email_, subject_)
+                    # print("From: ", sender_, "EMAIL: ", email_, " SUBJECT: ", subject_)
