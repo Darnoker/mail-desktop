@@ -18,6 +18,7 @@ from models.StandardItem import StandardItem
 
 
 from controllers.BaseController import BaseController
+from services.FetchMessagesService import FetchMessagesService
 
 
 class MainWindowController(BaseController):
@@ -77,6 +78,7 @@ class MainWindowController(BaseController):
         self.treeView.setIndentation(12)
         self.treeView.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.treeView.pressed.connect(lambda: self.getHeaders())
+        self.tableWidget.pressed.connect(lambda: self.getMessage())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -142,6 +144,17 @@ class MainWindowController(BaseController):
                     subject_ = QtWidgets.QTableWidgetItem(subjectList[j])
                     self.tableWidget.setItem(j, i, subject_)
 
+    def getMessage(self):
+        row = self.tableWidget.currentRow() + 1
+        emailAccount = self.fetchHeadersService.emailAccount
+        messageID = self.fetchHeadersService.idDict[row]
+        self.fetchMessagesService = FetchMessagesService(emailAccount, messageID)
+        self.fetchMessagesService.finished.connect(lambda: self.showMessage())
+        self.fetchMessagesService.start()
+
+    def showMessage(self):
+        message = self.fetchMessagesService.message
+        self.textBrowser.setText(message)
 
 # if __name__ == "__main__":
 #     import sys
