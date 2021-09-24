@@ -6,77 +6,81 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>843</width>
-    <height>617</height>
+    <width>708</width>
+    <height>627</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTreeView" name="treeView">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>211</width>
-      <height>571</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QTableWidget" name="tableWidget">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>0</y>
-      <width>631</width>
-      <height>221</height>
-     </rect>
-    </property>
-    <column>
-     <property name="text">
-      <string>Sender</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Subject</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Recipent</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Size</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Date</string>
-     </property>
-    </column>
-   </widget>
-   <widget class="QTextBrowser" name="textBrowser">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>220</y>
-      <width>631</width>
-      <height>351</height>
-     </rect>
-    </property>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QTreeView" name="treeView">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QTableWidget" name="tableWidget">
+          <column>
+           <property name="text">
+            <string>Sender</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Subject</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Recipent</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Size</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Date</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTextBrowser" name="textBrowser">
+          <property name="minimumSize">
+           <size>
+            <width>213</width>
+            <height>206</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>843</width>
-     <height>22</height>
+     <width>708</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
