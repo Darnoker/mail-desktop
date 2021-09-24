@@ -34,9 +34,9 @@ class LoginWindowController(BaseController):
         self.gridLayout.setHorizontalSpacing(0)
         self.gridLayout.setVerticalSpacing(5)
         self.gridLayout.setObjectName("gridLayout")
-        self.emailAddressLabel = QtWidgets.QLabel(loginWindow)
-        self.emailAddressLabel.setObjectName("emailAdressLabel")
-        self.gridLayout.addWidget(self.emailAddressLabel, 0, 0, 1, 1)
+        self.emailAdressLabel = QtWidgets.QLabel(loginWindow)
+        self.emailAdressLabel.setObjectName("emailAdressLabel")
+        self.gridLayout.addWidget(self.emailAdressLabel, 0, 0, 1, 1)
         self.emailAdressField = QtWidgets.QLineEdit(loginWindow)
         self.emailAdressField.setObjectName("emailAdressField")
         self.gridLayout.addWidget(self.emailAdressField, 0, 1, 1, 1)
@@ -62,14 +62,13 @@ class LoginWindowController(BaseController):
         self.errorLabel = QtWidgets.QLabel(loginWindow)
         self.errorLabel.setObjectName(u"errorLabel")
         self.errorLabel.setGeometry(QtCore.QRect(10, 190, 261, 16))
-        self.gridLayout_2.addWidget(self.errorLabel, 2, 0, 1, 1)
         self.loginButton.clicked['bool'].connect(lambda: self.createLoginThread())
 
     # function, that is used to name labels and window title.
     def retranslateUi(self, loginWindow):
         _translate = QtCore.QCoreApplication.translate
         loginWindow.setWindowTitle(_translate("loginWindow", "Login"))
-        self.emailAddressLabel.setText(_translate("loginWindow", "Email:"))
+        self.emailAdressLabel.setText(_translate("loginWindow", "Email:"))
         self.passwordLabel.setText(_translate("loginWindow", "Password:"))
         self.loginButton.setText(_translate("loginWindow", "Login"))
 
