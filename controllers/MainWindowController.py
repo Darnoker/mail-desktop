@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtWidgets, QtGui
-from PyQt5.QtWidgets import QAbstractItemView
+from PyQt5.QtWidgets import QAbstractItemView, QHeaderView
 from services.FetchHeadersService import FetchHeadersService
 
 from models.StandardItem import StandardItem
@@ -51,6 +51,7 @@ class MainWindowController(BaseController):
         self.tableWidget.setRowCount(0)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableWidget.verticalHeader().setHidden(True)
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
