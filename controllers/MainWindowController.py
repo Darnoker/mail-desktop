@@ -72,6 +72,7 @@ class MainWindowController(BaseController):
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 708, 21))
         self.menubar.setObjectName("menubar")
+        self.menubar.setNativeMenuBar(False)
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
         self.menuEdit = QtWidgets.QMenu(self.menubar)
