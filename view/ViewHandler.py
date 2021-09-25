@@ -1,5 +1,6 @@
 from controllers.MainWindowController import MainWindowController
 from controllers.LoginWindowController import LoginWindowController
+from controllers.OptionsWindowController import OptionsWindowController
 from PyQt5 import QtWidgets
 
 
@@ -29,3 +30,10 @@ class ViewHandler:
 
     def initMailTreeView(self):
         self.mainWindowController.initTreeView()
+
+    def showOptionsWindow(self):
+        self.optionsWindow= QtWidgets.QWidget()
+        self.optionWindowController = OptionsWindowController(self)
+        self.optionWindowController.setupUi(self.optionsWindow)
+        self.optionsWindow.show()
+

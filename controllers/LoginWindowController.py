@@ -18,7 +18,8 @@ from services.LoginService import LoginService
 
 class LoginWindowController(BaseController):
     def __init__(self, viewHandler, emailManager):
-        super(LoginWindowController, self).__init__(viewHandler, emailManager)
+        self.emailManager = emailManager
+        super(LoginWindowController, self).__init__(viewHandler)
 
     # function used to set up the login window
     def setupUi(self, loginWindow):

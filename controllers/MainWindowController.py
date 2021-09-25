@@ -23,7 +23,8 @@ from services.FetchMessagesService import FetchMessagesService
 
 class MainWindowController(BaseController):
     def __init__(self, viewHandler, emailManager):
-        super(MainWindowController, self).__init__(viewHandler, emailManager)
+        self.emailManager = emailManager
+        super(MainWindowController, self).__init__(viewHandler)
 
     # function, that is called to set up the main window.
     def setupUi(self, MainWindow):
@@ -80,6 +81,8 @@ class MainWindowController(BaseController):
         self.menuEdit.setObjectName("menuEdit")
         self.menuHelp = QtWidgets.QMenu(self.menubar)
         self.menuHelp.setObjectName("menuHelp")
+        self.optionsAction = QtWidgets.QAction("&Options")
+        self.optionsAction.triggered.connect(lambda: self.openOptionsWindow())
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -87,6 +90,7 @@ class MainWindowController(BaseController):
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
+        self.menubar.addAction(self.optionsAction)
         self.treeView.setIndentation(12)
         self.treeView.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.treeView.pressed.connect(lambda: self.getHeaders())
@@ -106,6 +110,7 @@ class MainWindowController(BaseController):
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))
+        self.optionsAction.setText(_translate("Main Window", "Options"))
 
     def initTreeView(self):
         self.treeView.setModel(self.emailManager.treeModel)
@@ -165,6 +170,10 @@ class MainWindowController(BaseController):
     def showMessage(self):
         message = self.fetchMessagesService.message
         self.textBrowser.setText(message)
+
+    def openOptionsWindow(self):
+        self.viewHandler.showOptionsWindow()
+
 
 # if __name__ == "__main__":
 #     import sys
