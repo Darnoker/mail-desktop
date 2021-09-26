@@ -10,8 +10,9 @@ from services.EmailManager import EmailManager
 
 
 class ViewHandler:
-    def __init__(self):
+    def __init__(self,stylesheetManager):
         self.emailManager = EmailManager(self)
+        self.stylesheetManager = stylesheetManager
 
     def showLoginWindow(self):
         self.loginWindow = QtWidgets.QDialog()
@@ -33,7 +34,7 @@ class ViewHandler:
 
     def showOptionsWindow(self):
         self.optionsWindow= QtWidgets.QWidget()
-        self.optionWindowController = OptionsWindowController(self)
+        self.optionWindowController = OptionsWindowController(self,self.stylesheetManager)
         self.optionWindowController.setupUi(self.optionsWindow)
         self.optionsWindow.show()
 
