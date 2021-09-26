@@ -4,7 +4,7 @@ from PyQt5 import QtCore, QtWidgets
 from controllers.BaseController import BaseController
 
 class OptionsWindowController(BaseController):
-    def __init__(self, viewHandler,app):
+    def __init__(self, viewHandler):
         super(OptionsWindowController, self).__init__(viewHandler)
 
     def setupUi(self, OptionsWindow):
