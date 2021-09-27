@@ -11,6 +11,16 @@ QMainWindow {
 QCalendar {
 	background-color: #151a1e;
 }
+
+QWidget {
+	background-color: #151a1e;
+	color: #d3dae3;
+}
+
+QHeaderView::section {
+    background-color: #151a1e;
+}
+
 QTextEdit {
 	border-width: 1px;
 	border-style: solid;
