@@ -22,6 +22,7 @@ class FetchHeadersService(QThread):
         self.emailList = []
         self.idList = []
         self.idDict = {}
+        self.messageNumber = 0
 
     def addToList(self, messageID, sender_, email_, subject_):
         self.idList.append(messageID)
