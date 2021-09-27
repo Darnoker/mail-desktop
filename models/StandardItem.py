@@ -2,12 +2,9 @@ from PyQt5.QtGui import QStandardItem, QColor, QFont
 
 
 class StandardItem(QStandardItem):
-    def __init__(self, txt='', font_size = 10 , set_bold = False, color = QColor(0,0,0)):
+    def __init__(self, txt=''):
         super(StandardItem, self).__init__()
-        fnt = QFont('Open Sans', font_size)
-        fnt.setBold(set_bold)
+        fnt = QFont('Open Sans')
         self.setEditable(False)
-        self.setForeground(color)
-        self.setFont(fnt)
         self.setText(txt)
 
