@@ -9,8 +9,12 @@ Available at: https://github.com/GTRONICK/QSS/blob/master/MaterialDark.qss
 QMainWindow {
 	background-color:#1e1d23;
 }
-QDialog {
-	background-color:#1e1d23;
+QWidget {
+	background-color: #1e1d23;
+	color: #a9b7c6;
+}
+QHeaderView::section {
+    background-color: #151a1e;
 }
 QColorDialog {
 	background-color:#1e1d23;
