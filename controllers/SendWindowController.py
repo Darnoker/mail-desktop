@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QPushButton
 
 from controllers.BaseController import BaseController
 
@@ -43,6 +44,10 @@ class SendWindowController(BaseController):
         self.nameField = QtWidgets.QLineEdit(Dialog)
         self.nameField.setObjectName("nameField")
         self.gridLayout.addWidget(self.nameField, 0, 1, 1, 1)
+        self.sendButton = QPushButton(Dialog)
+        self.sendButton.setObjectName(u"sendButton")
+        self.gridLayout.addWidget(self.sendButton, 4, 1, 1, 1)
+
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -53,3 +58,5 @@ class SendWindowController(BaseController):
         self.recipientLabel.setText(_translate("Dialog", "To:"))
         self.nameLabel.setText(_translate("Dialog", "Name:"))
         self.subjectLabel.setText(_translate("Dialog", "Subject:"))
+        self.sendButton.setText(_translate("Dialog", "Send"))
+
