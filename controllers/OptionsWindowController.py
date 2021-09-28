@@ -43,8 +43,9 @@ class OptionsWindowController(BaseController):
         if index.data() == 'Appearance':
             self.spawnEditWidget(OptionsWindow)
         else:
-            self.comboBox.deleteLater()
-            self.comboBox = None
+            if self.comboBox is not None:
+                self.comboBox.deleteLater()
+                self.comboBox = None
 
 
     def spawnEditWidget(self,OptionsWindow):
