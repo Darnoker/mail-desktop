@@ -66,13 +66,23 @@ class SendWindowController(BaseController):
     def sendMessage(self):
         emailAccount = self.emailManager.accountDict[self.emailManager.emailAddress]
         name = self.nameField.text()
-        to_emails = self.recipientField.text().split(', ')
-        subject = self.subjectField.text()
-        message = self.messageField.toPlainText()
-        self.sendMessageService = SendMessageService(emailAccount, name, to_emails, subject, message)
-        self.sendMessageService.started.connect(lambda: self.sendButton.setEnabled(False))
-        self.sendMessageService.finished.connect(lambda: self.sendButton.setEnabled(True))
-        self.sendMessageService.start()
+        recipient_text_list = [self.recipientField.text()]
+        to_emails = self.recipientField.text().split(' ')
+
+        if to_emails == recipient_text_list:
+            print("zle napisane!")
+            
+        else:
+            for i in range(len(to_emails)):
+                if to_emails[i][-1] == ',':
+                    to_emails[i] = to_emails[i].replace(',' , '')
+            subject = self.subjectField.text()
+            message = self.messageField.toPlainText()
+            self.sendMessageService = SendMessageService(emailAccount, name, to_emails, subject, message)
+            self.sendMessageService.started.connect(lambda: self.sendButton.setEnabled(False))
+            self.sendMessageService.finished.connect(lambda: self.sendButton.setEnabled(True))
+            self.sendMessageService.start()
+
 
 
 
