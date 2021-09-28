@@ -68,6 +68,9 @@ class MainWindowController(BaseController):
         self.textBrowser.setMinimumSize(QtCore.QSize(213, 206))
         self.textBrowser.setObjectName("textBrowser")
         self.verticalLayout.addWidget(self.textBrowser)
+        self.sendEmailButton = QtWidgets.QPushButton(self.centralwidget)
+        self.sendEmailButton.setObjectName("sendEmailButton")
+        self.verticalLayout.addWidget(self.sendEmailButton)
         self.horizontalLayout.addLayout(self.verticalLayout)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -95,6 +98,7 @@ class MainWindowController(BaseController):
         self.treeView.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.treeView.pressed.connect(lambda: self.getHeaders())
         self.tableWidget.pressed.connect(lambda: self.getMessage())
+        self.sendEmailButton.pressed.connect(lambda: self.openSendWindow())
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -111,6 +115,8 @@ class MainWindowController(BaseController):
         self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))
         self.optionsAction.setText(_translate("Main Window", "Options"))
+        self.sendEmailButton.setText(_translate("MainWindow", "Send Email"))
+
 
     def initTreeView(self):
         self.treeView.setModel(self.emailManager.treeModel)
@@ -173,6 +179,9 @@ class MainWindowController(BaseController):
 
     def openOptionsWindow(self):
         self.viewHandler.showOptionsWindow()
+
+    def openSendWindow(self):
+        self.viewHandler.showSendWindow()
 
 
 # if __name__ == "__main__":
