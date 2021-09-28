@@ -70,6 +70,8 @@ class SendWindowController(BaseController):
         subject = self.subjectField.text()
         message = self.messageField.toPlainText()
         self.sendMessageService = SendMessageService(emailAccount, name, to_emails, subject, message)
+        self.sendMessageService.started.connect(lambda: self.sendButton.setEnabled(False))
+        self.sendMessageService.finished.connect(lambda: self.sendButton.setEnabled(True))
         self.sendMessageService.start()
 
 
