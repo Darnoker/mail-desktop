@@ -41,7 +41,7 @@ class ViewHandler:
 
     def showSendWindow(self):
         self.sendWindow = QtWidgets.QDialog()
-        self.sendWindowController = SendWindowController(self)
+        self.sendWindowController = SendWindowController(self, self.emailManager)
         self.sendWindowController.setupUi(self.sendWindow)
         self.sendWindow.show()
 

@@ -21,6 +21,7 @@ class EmailManager:
         self.accountDict = {}
 
     def addEmailAccount(self, emailAccount):
+        self.emailAddress = emailAccount.address
         self.treeModel = QtGui.QStandardItemModel()
         self.root = self.treeModel.invisibleRootItem()
         self.foldersList = []

@@ -12,11 +12,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QPushButton
 
 from controllers.BaseController import BaseController
+from services.SendMessageService import SendMessageService
 
 
 class SendWindowController(BaseController):
-    def __init__(self, viewHandler):
+    def __init__(self, viewHandler, emailManager):
         super(SendWindowController, self).__init__(viewHandler)
+        self.emailManager = emailManager
 
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
@@ -47,6 +49,7 @@ class SendWindowController(BaseController):
         self.sendButton = QPushButton(Dialog)
         self.sendButton.setObjectName(u"sendButton")
         self.gridLayout.addWidget(self.sendButton, 4, 1, 1, 1)
+        self.sendButton.clicked.connect(lambda: self.sendMessage())
 
 
         self.retranslateUi(Dialog)
@@ -59,4 +62,17 @@ class SendWindowController(BaseController):
         self.nameLabel.setText(_translate("Dialog", "Name:"))
         self.subjectLabel.setText(_translate("Dialog", "Subject:"))
         self.sendButton.setText(_translate("Dialog", "Send"))
+
+    def sendMessage(self):
+        emailAccount = self.emailManager.accountDict[self.emailManager.emailAddress]
+        name = self.nameField.text()
+        to_emails = self.recipientField.text().split(', ')
+        subject = self.subjectField.text()
+        message = self.messageField.toPlainText()
+        self.sendMessageService = SendMessageService(emailAccount, name, to_emails, subject, message)
+        self.sendMessageService.start()
+
+
+
+
 

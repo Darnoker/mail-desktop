@@ -135,6 +135,7 @@ class MainWindowController(BaseController):
                 parent = index_.parent().data()
                 index_ = index_.parent()
             folderName = index.data()
+            self.emailManager.emailAddress = parent
             emailAccount = self.emailManager.accountDict[parent]
             self.fetchHeadersService = FetchHeadersService(emailAccount, folderName, self.emailManager)
             self.fetchHeadersService.finished.connect(lambda: self.showHeaders())
