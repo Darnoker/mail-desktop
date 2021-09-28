@@ -9,8 +9,6 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QPushButton
-
 from controllers.BaseController import BaseController
 from services.SendMessageService import SendMessageService
 
@@ -21,38 +19,58 @@ class SendWindowController(BaseController):
         self.emailManager = emailManager
 
     def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(586, 569)
+        if not Dialog.objectName():
+            Dialog.setObjectName(u"Dialog")
+        Dialog.resize(605, 576)
         self.gridLayout = QtWidgets.QGridLayout(Dialog)
-        self.gridLayout.setObjectName("gridLayout")
-        self.recipientLabel = QtWidgets.QLabel(Dialog)
-        self.recipientLabel.setObjectName("recipientLabel")
-        self.gridLayout.addWidget(self.recipientLabel, 1, 0, 1, 1)
-        self.subjectField = QtWidgets.QLineEdit(Dialog)
-        self.subjectField.setObjectName("subjectField")
-        self.gridLayout.addWidget(self.subjectField, 2, 1, 1, 1)
-        self.recipientField = QtWidgets.QLineEdit(Dialog)
-        self.recipientField.setObjectName("recipientField")
-        self.gridLayout.addWidget(self.recipientField, 1, 1, 1, 1)
-        self.messageField = QtWidgets.QTextEdit(Dialog)
-        self.messageField.setObjectName("messageField")
-        self.gridLayout.addWidget(self.messageField, 3, 0, 1, 2)
-        self.nameLabel = QtWidgets.QLabel(Dialog)
-        self.nameLabel.setObjectName("nameLabel")
-        self.gridLayout.addWidget(self.nameLabel, 0, 0, 1, 1)
-        self.subjectLabel = QtWidgets.QLabel(Dialog)
-        self.subjectLabel.setObjectName("subjectLabel")
-        self.gridLayout.addWidget(self.subjectLabel, 2, 0, 1, 1)
-        self.nameField = QtWidgets.QLineEdit(Dialog)
-        self.nameField.setObjectName("nameField")
-        self.gridLayout.addWidget(self.nameField, 0, 1, 1, 1)
-        self.sendButton = QPushButton(Dialog)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.horizontalSpacer = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout.addItem(self.horizontalSpacer, 6, 2, 1, 1)
+        self.sendButton = QtWidgets.QPushButton(Dialog)
         self.sendButton.setObjectName(u"sendButton")
-        self.gridLayout.addWidget(self.sendButton, 4, 1, 1, 1)
-        self.sendButton.clicked.connect(lambda: self.sendMessage())
-
-
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.sendButton.sizePolicy().hasHeightForWidth())
+        self.sendButton.setSizePolicy(sizePolicy)
+        self.gridLayout.addWidget(self.sendButton, 6, 3, 1, 1)
+        self.recipientLabel = QtWidgets.QLabel(Dialog)
+        self.recipientLabel.setObjectName(u"recipientLabel")
+        self.gridLayout.addWidget(self.recipientLabel, 3, 0, 1, 1)
+        self.errorLabel = QtWidgets.QLabel(Dialog)
+        self.errorLabel.setObjectName(u"errorLabel")
+        sizePolicy1 = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy1.setHorizontalStretch(2)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.errorLabel.sizePolicy().hasHeightForWidth())
+        self.errorLabel.setSizePolicy(sizePolicy1)
+        self.gridLayout.addWidget(self.errorLabel, 6, 0, 1, 2)
+        self.nameField = QtWidgets.QLineEdit(Dialog)
+        self.nameField.setObjectName(u"nameField")
+        sizePolicy2 = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(10)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.nameField.sizePolicy().hasHeightForWidth())
+        self.nameField.setSizePolicy(sizePolicy2)
+        self.gridLayout.addWidget(self.nameField, 0, 1, 1, 1)
+        self.subjectField = QtWidgets.QLineEdit(Dialog)
+        self.subjectField.setObjectName(u"subjectField")
+        self.gridLayout.addWidget(self.subjectField, 4, 1, 1, 1)
+        self.recipientField = QtWidgets.QLineEdit(Dialog)
+        self.recipientField.setObjectName(u"recipientField")
+        self.gridLayout.addWidget(self.recipientField, 3, 1, 1, 1)
+        self.messageField = QtWidgets.QTextEdit(Dialog)
+        self.messageField.setObjectName(u"messageField")
+        self.gridLayout.addWidget(self.messageField, 5, 0, 1, 4)
+        self.subjectLabel = QtWidgets.QLabel(Dialog)
+        self.subjectLabel.setObjectName(u"subjectLabel")
+        self.gridLayout.addWidget(self.subjectLabel, 4, 0, 1, 1)
+        self.nameLabel = QtWidgets.QLabel(Dialog)
+        self.nameLabel.setObjectName(u"nameLabel")
+        self.gridLayout.addWidget(self.nameLabel, 0, 0, 1, 1)
+        self.sendButton.pressed.connect(lambda: self.sendMessage())
         self.retranslateUi(Dialog)
+
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
@@ -62,26 +80,44 @@ class SendWindowController(BaseController):
         self.nameLabel.setText(_translate("Dialog", "Name:"))
         self.subjectLabel.setText(_translate("Dialog", "Subject:"))
         self.sendButton.setText(_translate("Dialog", "Send"))
+        self.errorLabel.setText("")
+
 
     def sendMessage(self):
-        emailAccount = self.emailManager.accountDict[self.emailManager.emailAddress]
-        name = self.nameField.text()
-        recipient_text_list = [self.recipientField.text()]
-        to_emails = self.recipientField.text().split(' ')
+        if self.checkFields():
+            emailAccount = self.emailManager.accountDict[self.emailManager.emailAddress]
+            name = self.nameField.text()
+            recipient_text_list = [self.recipientField.text()]
+            to_emails = self.recipientField.text().split(' ')
 
-        if to_emails == recipient_text_list:
-            print("zle napisane!")
-            
-        else:
-            for i in range(len(to_emails)):
-                if to_emails[i][-1] == ',':
-                    to_emails[i] = to_emails[i].replace(',' , '')
-            subject = self.subjectField.text()
-            message = self.messageField.toPlainText()
-            self.sendMessageService = SendMessageService(emailAccount, name, to_emails, subject, message)
-            self.sendMessageService.started.connect(lambda: self.sendButton.setEnabled(False))
-            self.sendMessageService.finished.connect(lambda: self.sendButton.setEnabled(True))
-            self.sendMessageService.start()
+            if to_emails == recipient_text_list and len(to_emails) > 1:
+                self.errorLabel.setText("Recipient field not properly written!")
+
+            else:
+                for i in range(len(to_emails)):
+                    if to_emails[i][-1] == ',':
+                        to_emails[i] = to_emails[i].replace(',' , '')
+                subject = self.subjectField.text()
+                message = self.messageField.toPlainText()
+                self.sendMessageService = SendMessageService(emailAccount, name, to_emails, subject, message)
+                self.sendMessageService.started.connect(lambda: self.sendButton.setEnabled(False))
+                self.sendMessageService.finished.connect(lambda: self.sendButton.setEnabled(True))
+                self.sendMessageService.start()
+    
+    def checkFields(self):
+        if not self.nameField.text():
+            self.errorLabel.setText("Fill name field!")
+            return False
+        if not self.recipientField.text():
+            self.errorLabel.setText("Fill recipient field!")
+            return False
+        if not self.subjectField.text():
+            self.errorLabel.setText("Fill subject field!")
+            return False
+
+        return True
+
+
 
 
 
