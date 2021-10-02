@@ -50,14 +50,15 @@ class OptionsWindowController(BaseController):
 
 
     def spawnEditWidget(self,OptionsWindow):
-        self.comboBox = QtWidgets.QComboBox(OptionsWindow)
-        self.comboBox.setGeometry(QtCore.QRect(230,12,150,25))
-        self.comboBox.setObjectName("combobox")
-        themes = self.stylesheetManager.getThemes()
-        for i in themes:
-            self.comboBox.addItem(i)
-        self.comboBox.show()
-        self.pushButton.setEnabled(True)
+        if self.comboBox is None:
+            self.comboBox = QtWidgets.QComboBox(OptionsWindow)
+            self.comboBox.setGeometry(QtCore.QRect(230,12,150,25))
+            self.comboBox.setObjectName("combobox")
+            themes = self.stylesheetManager.getThemes()
+            for i in themes:
+                self.comboBox.addItem(i)
+            self.comboBox.show()
+            self.pushButton.setEnabled(True)
     def changeStyleSheet(self):
         self.stylesheetManager.setStyle(str(self.comboBox.currentText()))
 
