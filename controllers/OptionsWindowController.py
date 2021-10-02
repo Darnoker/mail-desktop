@@ -10,6 +10,7 @@ class OptionsWindowController(BaseController):
     def __init__(self, viewHandler, styleheetManager):
         super(OptionsWindowController, self).__init__(viewHandler)
         self.stylesheetManager = styleheetManager
+        self.comboBox = None
 
     def setupUi(self, OptionsWindow):
         OptionsWindow.setObjectName("OptionsWindow")
