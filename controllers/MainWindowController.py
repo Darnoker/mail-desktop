@@ -16,7 +16,6 @@ from models.StandardItem import StandardItem
 
 # MainWindowController is a class, that describes main window and all logic behind it.
 
-
 from controllers.BaseController import BaseController
 from services.FetchMessagesService import FetchMessagesService
 
@@ -102,6 +101,7 @@ class MainWindowController(BaseController):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+    # function, that is used to name labels and window title.
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -117,7 +117,7 @@ class MainWindowController(BaseController):
         self.optionsAction.setText(_translate("Main Window", "Options"))
         self.sendEmailButton.setText(_translate("MainWindow", "Send Email"))
 
-
+    # function, that initializes tree view in main window, where email address and folders will be seen.
     def initTreeView(self):
         self.treeView.setModel(self.emailManager.treeModel)
         self.treeView.setRootIndex(self.emailManager.root.index())
@@ -125,7 +125,7 @@ class MainWindowController(BaseController):
         self.treeView.setExpanded(self.emailManager.treeItem.index(), True)
         for i in range(self.emailManager.treeItem.rowCount()):
             self.treeView.setExpanded(self.emailManager.treeItem.child(i, 0).index(), True)
-
+    # function, that gets headers of email message: sender, subject and date
     def getHeaders(self):
         try:
             index = self.treeView.selectedIndexes()[0]
@@ -142,7 +142,7 @@ class MainWindowController(BaseController):
             self.fetchHeadersService.start()
         except Exception as e:
             print(str(e))
-
+    # function, that shows headers in main window
     def showHeaders(self):
         senderList = self.fetchHeadersService.senderList
         senderList.reverse()
@@ -165,7 +165,7 @@ class MainWindowController(BaseController):
                 if i == 2:
                     subject_ = QtWidgets.QTableWidgetItem(subjectList[j])
                     self.tableWidget.setItem(j, i, subject_)
-
+    # function, that gets email message content
     def getMessage(self):
         row = self.tableWidget.currentRow() + 1
         emailAccount = self.fetchHeadersService.emailAccount
@@ -173,14 +173,14 @@ class MainWindowController(BaseController):
         self.fetchMessagesService = FetchMessagesService(emailAccount, messageID)
         self.fetchMessagesService.finished.connect(lambda: self.showMessage())
         self.fetchMessagesService.start()
-
+    # function, that shows message in main window
     def showMessage(self):
         message = self.fetchMessagesService.message
         self.textBrowser.setText(message)
-
+    # function, that enables opening options window
     def openOptionsWindow(self):
         self.viewHandler.showOptionsWindow()
-
+    # function, that enables opening 'send' window
     def openSendWindow(self):
         self.viewHandler.showSendWindow()
 

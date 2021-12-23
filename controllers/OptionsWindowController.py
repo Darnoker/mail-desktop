@@ -5,7 +5,7 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 from controllers.BaseController import BaseController
 from models.StandardItem import StandardItem
 
-
+# Class, that decsribes and provides functionality to options window
 class OptionsWindowController(BaseController):
     def __init__(self, viewHandler, styleheetManager):
         super(OptionsWindowController, self).__init__(viewHandler)
@@ -40,6 +40,7 @@ class OptionsWindowController(BaseController):
         _translate = QtCore.QCoreApplication.translate
         OptionsWindow.setWindowTitle(_translate("OptionsWindow", "Options"))
         self.pushButton.setText(_translate("OptionsWindow", "Apply"))
+
     def item_doubleClicked(self, index,OptionsWindow):
         if index.data() == 'Appearance':
             self.spawnEditWidget(OptionsWindow)

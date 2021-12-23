@@ -15,7 +15,7 @@ from controllers.BaseController import BaseController
 from models.EmailAccount import EmailAccount
 from services.LoginService import LoginService
 
-
+# Class, that controls flow of app in login window.
 class LoginWindowController(BaseController):
     def __init__(self, viewHandler, emailManager):
         self.emailManager = emailManager
@@ -74,6 +74,8 @@ class LoginWindowController(BaseController):
         self.passwordLabel.setText(_translate("loginWindow", "Password:"))
         self.loginButton.setText(_translate("loginWindow", "Login"))
 
+    # function, that creates login thread, enabling multi-threading and prevents freezing login window when clicking
+    # login button
     def createLoginThread(self):
         if self.checkFields():
             emailAccount = EmailAccount(self.emailAdressField.text(),
@@ -84,7 +86,7 @@ class LoginWindowController(BaseController):
             self.loginService.finished.connect(lambda: self.loginButton.setEnabled(True))
             self.loginService.finished.connect(lambda: self.emailManagerAction(self.loginService.FLAG, emailAccount))
             self.loginService.start()
-
+    # function, that calls fetchfolderservice
     def emailManagerAction(self, flag, emailAccount):
         if flag:
             self.emailManager.addEmailAccount(emailAccount)
