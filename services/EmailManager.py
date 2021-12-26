@@ -39,7 +39,7 @@ class EmailManager:
         self.fetchHeadersService = FetchHeadersService(emailAccount, folderName, self)
         self.fetchHeadersService.started.connect(lambda: print("START"))
         self.fetchHeadersService.start()
-    # opening main window (probably shouldn't be in this class)
+    # opening main window (probably should be in different class)
     def openMainWindow(self):
         self.viewHandler.showMainWindow()
         self.viewHandler.initMailTreeView()
