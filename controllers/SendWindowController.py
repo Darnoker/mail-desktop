@@ -13,6 +13,7 @@ from controllers.BaseController import BaseController
 from services.SendMessageService import SendMessageService
 
 
+# Class, that describes window for sending messages and provides functionality to it.
 class SendWindowController(BaseController):
     def __init__(self, viewHandler, emailManager):
         super(SendWindowController, self).__init__(viewHandler)
@@ -24,7 +25,8 @@ class SendWindowController(BaseController):
         Dialog.resize(605, 576)
         self.gridLayout = QtWidgets.QGridLayout(Dialog)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.horizontalSpacer = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalSpacer = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding,
+                                                      QtWidgets.QSizePolicy.Minimum)
         self.gridLayout.addItem(self.horizontalSpacer, 6, 2, 1, 1)
         self.sendButton = QtWidgets.QPushButton(Dialog)
         self.sendButton.setObjectName(u"sendButton")
@@ -73,6 +75,7 @@ class SendWindowController(BaseController):
 
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
+    # function, that is used to name labels and window title.
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
@@ -82,7 +85,7 @@ class SendWindowController(BaseController):
         self.sendButton.setText(_translate("Dialog", "Send"))
         self.errorLabel.setText("")
 
-
+    # function, that provides functionality for sending messages.
     def sendMessage(self):
         if self.checkFields():
             emailAccount = self.emailManager.accountDict[self.emailManager.emailAddress]
@@ -92,18 +95,18 @@ class SendWindowController(BaseController):
 
             if to_emails == recipient_text_list and len(to_emails) > 1:
                 self.errorLabel.setText("Recipient field not properly written!")
-
             else:
                 for i in range(len(to_emails)):
                     if to_emails[i][-1] == ',':
-                        to_emails[i] = to_emails[i].replace(',' , '')
+                        to_emails[i] = to_emails[i].replace(',', '')
                 subject = self.subjectField.text()
                 message = self.messageField.toPlainText()
                 self.sendMessageService = SendMessageService(emailAccount, name, to_emails, subject, message)
                 self.sendMessageService.started.connect(lambda: self.sendButton.setEnabled(False))
                 self.sendMessageService.finished.connect(lambda: self.sendButton.setEnabled(True))
                 self.sendMessageService.start()
-    
+
+# function, that checks fields in sending message window
     def checkFields(self):
         if not self.nameField.text():
             self.errorLabel.setText("Fill name field!")
@@ -116,11 +119,3 @@ class SendWindowController(BaseController):
             return False
 
         return True
-
-
-
-
-
-
-
-

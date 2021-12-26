@@ -9,7 +9,7 @@ from PyQt5 import QtWidgets
 from controllers.SendWindowController import SendWindowController
 from services.EmailManager import EmailManager
 
-
+# Class that manages view flow (maybe should be renamed to ViewManager?)
 class ViewHandler:
     def __init__(self,stylesheetManager):
         self.emailManager = EmailManager(self)

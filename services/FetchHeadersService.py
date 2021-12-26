@@ -11,6 +11,7 @@ def decode(header):
         return header
 
 
+# Class used for fetching headers of email messages.
 class FetchHeadersService(QThread):
     def __init__(self, emailAccount, folder, emailManager):
         super().__init__()
@@ -24,6 +25,7 @@ class FetchHeadersService(QThread):
         self.idDict = {}
         self.messageNumber = 0
 
+    # function, that adds individual elements to their lists
     def addToList(self, messageID, sender_, email_, subject_):
         self.idList.append(messageID)
         self.senderList.append(sender_)
@@ -31,9 +33,11 @@ class FetchHeadersService(QThread):
         self.subjectList.append(subject_)
 
     def run(self):
+        # selecting folder
         self.emailAccount.mail.select_folder(self.emailManager.folderDict[self.folder], readonly=True)
         messages = self.emailAccount.mail.search('ALL')
         self.messageNumber = len(messages)
+        # fetching headers of email message
         for messageID, message_data in self.emailAccount.mail.fetch(messages, ['ENVELOPE']).items():
             envelope = message_data[b'ENVELOPE']
             # decoding subject
@@ -45,12 +49,12 @@ class FetchHeadersService(QThread):
             # decoding mailbox and getting host
             mailbox = envelope.sender[0].mailbox.decode('utf-8')
             host = envelope.sender[0].host
+            # decoding host
             if host is not None:
                 host = host.decode('utf-8')
                 # getting email string
                 email_ = mailbox + "@" + host
                 self.addToList(messageID, sender_, email_, subject_)
-                # print("ID: ", message_id, "From: ", sender_, "EMAIL: ", email_, " SUBJECT: ", subject_)
             else:
                 # checking other variation of sender
                 if sender_[0] != '<':
@@ -58,14 +62,13 @@ class FetchHeadersService(QThread):
                     sender_ = mailbox + ' ' + split_sender[0]
                     email_ = split_sender[1][1:-1].replace('@', ' by ').replace('=', '@')
                     self.addToList(messageID, sender_, email_, subject_)
-                    # print("ID: ", message_id, "From: ", sender_, "EMAIL: ", email_, " SUBJECT: ", subject_)
 
                 else:
                     email_ = sender_[1:-1].replace('@', ' by ').replace('=', '@')
                     sender_ = mailbox[3:-3]
                     self.addToList(messageID, sender_, email_, subject_)
-                    # print("ID: ", message_id, "From: ", sender_, "EMAIL: ", email_, " SUBJECT: ", subject_)
 
+        # adding id's from idList, starting from last index, to idDict, for fetching message bodies later
         j = self.messageNumber - 1
         for i in range(self.messageNumber):
             i = i + 1

@@ -6,7 +6,7 @@ import traceback
 # Class, that is used to manage login actions.
 from PyQt5 import QtCore
 
-
+# Class that uses multi-threading for logging in.
 class LoginService(QtCore.QThread):
     def __init__(self, emailAccount, loginWindowController):
         super().__init__()

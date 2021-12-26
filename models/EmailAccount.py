@@ -4,6 +4,7 @@ import imapclient
 
 
 # Class, that defines an email account of user.
+# Currently works only for gmail.
 class EmailAccount:
     def __init__(self, address, password):
         self.address = address
