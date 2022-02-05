@@ -139,6 +139,8 @@ class MainWindowController(BaseController):
             emailAccount = self.emailManager.accountDict[parent]
             self.fetchHeadersService = FetchHeadersService(emailAccount, folderName, self.emailManager)
             self.fetchHeadersService.finished.connect(lambda: self.showHeaders())
+            self.fetchHeadersService.finished.connect(lambda: self.treeView.setEnabled(True))
+            self.fetchHeadersService.started.connect(lambda: self.treeView.setDisabled(True))
             self.fetchHeadersService.start()
         except Exception as e:
             print(str(e))
@@ -171,7 +173,10 @@ class MainWindowController(BaseController):
         emailAccount = self.fetchHeadersService.emailAccount
         messageID = self.fetchHeadersService.idDict[row]
         self.fetchMessagesService = FetchMessagesService(emailAccount, messageID)
+        self.fetchMessagesService.started.connect(lambda: self.tableWidget.setEnabled(False))
+        self.fetchMessagesService.finished.connect(lambda: self.tableWidget.setEnabled(True))
         self.fetchMessagesService.finished.connect(lambda: self.showMessage())
+
         self.fetchMessagesService.start()
     # function, that shows message in main window
     def showMessage(self):
