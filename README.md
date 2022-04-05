@@ -1,5 +1,5 @@
 # mail-desktop
-A small project, created for educational purposes.<br />
+A small project, created for educational purposes, using PyQT5.<br />
 It isn't fully completed and code isn't optimized.<br />
 A mail client, which allows reading email messages, and sending them.<br />
 As for now, it only works for gmail. It'll work only if you enable less secure apps in your Google account.
